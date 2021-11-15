@@ -29,6 +29,40 @@ namespace UnitTestForLaba1
 			Assert::IsTrue(list.get_elem(1) == 2);
 			Assert::IsTrue(list.get_size() == 2);
 		}
+
+		TEST_METHOD(get_elem_number_test)
+		{
+			Listnum list;
+			try
+			{
+				int number = list.get_elem(9999);
+			}
+			catch (const out_of_range expection)
+			{
+				Assert::AreEqual("index is entered incorrectly", expection.what());
+			}
+			list.push_back(1);
+			try
+			{
+				int number = list.get_elem(9999);
+			}
+			catch (const out_of_range expection)
+			{
+				Assert::AreEqual("index is entered incorrectly", expection.what());
+			}
+			Assert::IsTrue(list.get_elem(0) == 1);
+			list.push_back(2);
+			try
+			{
+				int number = list.get_elem(9999);
+			}
+			catch (const out_of_range expection)
+			{
+				Assert::AreEqual("index is entered incorrectly", expection.what());
+			}
+			Assert::IsTrue(list.get_elem(0) == 1);
+			Assert::IsTrue(list.get_elem(1) == 2);
+		}
 		TEST_METHOD(push_front_number_test)
 		{
 			Listnum list;
@@ -142,7 +176,7 @@ namespace UnitTestForLaba1
 		{
 			Listnum list;
 			list.set(0, 0);
-			Assert::IsTrue(list.get_elem(0) == -1 && list.get_size() == 0);
+			Assert::IsTrue(list.get_size() == 0);
 			list.push_back(3);
 			list.set(0, 1);
 			Assert::IsTrue(list.get_elem(0) == 1 && list.get_size() == 1);

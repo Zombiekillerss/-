@@ -90,9 +90,10 @@ int Listnum::get_elem(size_t index)//get element
         for (size_t i = 0; i < index; i++, current = current->next); // moves the current list to index inclusive
         return current->number; // returns index number
     }
-    cout << "index is entered incorrectly" << endl; // error message
-    return -1; /* returns garbage by which you can understand 
-               that the index value is probably entered incorrectly*/
+    else
+    {
+        throw out_of_range("index is entered incorrectly"); // error message
+    }
 }
 
 void Listnum::remove(size_t index)
