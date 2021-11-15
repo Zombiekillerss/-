@@ -28,8 +28,7 @@ void Listnum::push_front(int newnumber)
     if (!head) head = new Node(newnumber); // creates a list with newnumber
     else
     {
-        Node* first;
-        first = new Node(newnumber); // creates a list with newnumber
+        Node* first = new Node(newnumber); // creates a list with newnumber
         first->next = head; // the next elements of the list are equal to the elements of the old list
         head = first; // the list is updated
     }
