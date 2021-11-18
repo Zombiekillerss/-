@@ -1,11 +1,10 @@
 #pragma once
+#pragma comment(linker, "/STACK:2000000")
+#pragma comment(linker, "/HEAP:2000000")
 #include <iostream>
 #include <stdexcept>
 using namespace std;
 
-
-//Outputs an array
-void PrintArrNum(int* arrnum, int size);
 //Creates a random number
 int GetRandomNumber(int max);
 //creates an array of numbers of length size and range from 0 to max

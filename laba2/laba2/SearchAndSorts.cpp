@@ -1,16 +1,5 @@
 #include "SearchAndSorts.h"
 
-void PrintArrNum(int* arrnum, int size)
-{
-    for (int i = 0; i < size; i++)
-    {
-        cout << arrnum[i];
-        if (i == size - 1) cout << ".";
-        else cout << ",";
-    }
-    cout << endl;
-}
-
 int GetRandomNumber(int max)//max of type long long so that there is no overflow
 {
     //finds a random number from 0 to max

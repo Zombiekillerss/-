@@ -6,12 +6,6 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace UnitTest1forlaba2
 {
-	/*Двоичный поиск (BinarySearch)
-	2. Быстрая сортировка (QuickSort)
-	3. Сортировка вставками (InsertionSort)
-	5. Глупая сортировка (BogoSort)
-	6. Сортировка подсчётом (CountingSort) для типа char
-	*/
 	TEST_CLASS(UnitTest1forlaba2)
 	{
 	public:

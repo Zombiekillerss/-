@@ -1,3 +1,6 @@
 ﻿  laba2.cpp
 C:\Users\Хозяин PC\Desktop\Проекты С++\Алгоритмы и структуры данных\laba2\laba2\laba2.cpp(8,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-  laba2.vcxproj -> C:\Users\Хозяин PC\Desktop\Проекты С++\Алгоритмы и структуры данных\laba2\Debug\laba2.exe
+  SearchAndSorts.cpp
+  Создание кода...
+C:\Users\Хозяин PC\Desktop\Проекты С++\Алгоритмы и структуры данных\laba2\laba2\SearchAndSorts.cpp(49): warning C4715: BinarySearch: значение возвращается не при всех путях выполнения
+  laba2.vcxproj -> C:\Users\Хозяин PC\Desktop\Проекты С++\Алгоритмы и структуры данных\laba2\Debug\laba2.lib
