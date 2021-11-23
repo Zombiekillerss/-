@@ -1,95 +1,6 @@
 #include "BinarySearchTree.h"
 
-MyQueue::MyQueue()
-{
-	size = 0;
-	head = nullptr;
-}
-
-MyQueue::~MyQueue()
-{
-	clear();
-}
-
-void MyQueue::pop_front()
-{
-	if (head)
-	{
-		Node* current = head->next;
-		delete head;
-		head = current;
-		size--;
-	}
-}
-
-void MyQueue::clear()
-{
-	while (size) pop_front();
-}
-
-void MyQueue::save_queue()
-{
-	size = 0;
-}
-
-size_t MyQueue::get_size()
-{
-	return size;
-}
-
-int MyQueue::get_elem(size_t index)//get element
-{
-	if (size >= index + 1)
-	{
-		Node* current = head;
-		for (size_t i = 0; i < index; i++, current = current->next); // moves the current list to index inclusive
-		return current->number; // returns index number
-	}
-	else
-	{
-		throw out_of_range("index is entered incorrectly"); // error message
-	}
-}
-
-void MyQueue::push_back(int newnumber)
-{
-	if (!head) head = new Node(newnumber); // creates a list with newnumber
-	else
-	{
-		Node* current = head;
-		while (current->next) current = current->next; // moves the current list while the next item exists
-		current->next = new Node(newnumber); // adds newnumber to the end of the list
-	}
-	size++;
-}
-
-Node* MyQueue::get_head()
-{
-	return head;
-}
-
-MyIterator::MyIterator(Node* start = nullptr)
-{
-	current = start;
-}
-
-bool MyIterator::has_next()
-{
-	return current;
-}
-
-int MyIterator::next()
-{
-	if (current)
-	{
-		int temp = current->number;
-		current = current->next;
-		return temp;
-	}
-	return 0;
-}
-
-bool MyBST::contains(int number)
+template <class T> bool MyBST<T>::contains(int number)
 {
 	NodeT* tree = head;
 	while (tree)
@@ -103,7 +14,7 @@ bool MyBST::contains(int number)
 	return false;
 }
 
-void MyBST::insert(int newnumber)
+template <class T>void MyBST<T>::insert(int newnumber)
 {
 	if (!head)
 	{
@@ -144,7 +55,7 @@ void MyBST::insert(int newnumber)
 	}
 }
 
-void MyBST::remove(int number)
+template <class T> void MyBST<T>::remove(int number)
 {
 	if (contains(number))
 	{
@@ -213,11 +124,11 @@ void MyBST::remove(int number)
 	}
 }
 
-MyIterator MyBST::create_dft_iterator()
+template <class T> T* MyBST<T>::create_dft_iterator()
 {
 	if (head)
 	{
-		MyQueue list;
+		MyQueue<MyIterator> list;
 		NodeT* current = head;
 		int maxcount = 0;
 		while(count > list.get_size())
@@ -250,7 +161,7 @@ MyIterator MyBST::create_dft_iterator()
 				current = current->right;
 		}
 		list.save_queue();
-		return MyIterator(list.get_head());
+		return list.create_iterator();
 	}
 	throw out_of_range("lol");
 }
