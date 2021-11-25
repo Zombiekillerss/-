@@ -1,4 +1,2 @@
-﻿laba3.obj : error LNK2019: ссылка на неразрешенный внешний символ "public: bool __thiscall MyBST<class MyIterator>::contains(int)" (?contains@?$MyBST@VMyIterator@@@@QAE_NH@Z) в функции _main.
-laba3.obj : error LNK2019: ссылка на неразрешенный внешний символ "public: void __thiscall MyBST<class MyIterator>::insert(int)" (?insert@?$MyBST@VMyIterator@@@@QAEXH@Z) в функции _main.
-laba3.obj : error LNK2019: ссылка на неразрешенный внешний символ "public: class MyIterator * __thiscall MyBST<class MyIterator>::create_dft_iterator(void)" (?create_dft_iterator@?$MyBST@VMyIterator@@@@QAEPAVMyIterator@@XZ) в функции _main.
-C:\Users\Хозяин PC\Documents\GitHub\-\laba3\Debug\laba3.exe : fatal error LNK1120: неразрешенных внешних элементов: 3
+﻿  laba3.cpp
+  laba3.vcxproj -> C:\Users\Хозяин PC\Documents\GitHub\-\laba3\Debug\laba3.exe

@@ -1,17 +1,17 @@
 #include "MyQueue.h"
 
-template <class T> MyQueue<T>::MyQueue()
+MyQueue::MyQueue()
 {
 	size = 0;
 	head = nullptr;
 }
 
-template <class T> MyQueue<T>::~MyQueue()
+MyQueue::~MyQueue()
 {
 	clear();
 }
 
-template <class T> void MyQueue<T>::pop_front()
+void MyQueue::pop_front()
 {
 	if (head)
 	{
@@ -22,22 +22,34 @@ template <class T> void MyQueue<T>::pop_front()
 	}
 }
 
-template <class T> void MyQueue<T>::clear()
+void MyQueue::clear()
 {
 	while (size) pop_front();
 }
 
-template <class T> void MyQueue<T>::save_queue()
+void MyQueue::save_queue()
 {
-	size = 0;
+	size = 0;//resets the length of the queue so that the destructor does not delete all elements of the queue
 }
 
-template <class T> size_t MyQueue<T>::get_size()
+size_t MyQueue::get_size()
 {
 	return size;
 }
 
-template <class T> int MyQueue<T>::get_elem(size_t index)//get element
+bool MyQueue::contains(int number)
+{
+	MyNode* current = head;
+	while (current)
+	{
+		if (current->number == number)
+			return true;
+		current = current->next;
+	}
+	return false;
+}
+
+int MyQueue::get_elem(size_t index)//get element
 {
 	if (size >= index + 1)
 	{
@@ -51,7 +63,21 @@ template <class T> int MyQueue<T>::get_elem(size_t index)//get element
 	}
 }
 
-template <class T> void MyQueue<T>::push_back(int newnumber)
+NodeT* MyQueue::get_elem_tree(size_t index)
+{
+	if (size >= index + 1)
+	{
+		MyNode* current = head;
+		for (size_t i = 0; i < index; i++, current = current->next); // moves the current list to index inclusive
+		return current->tree; // returns tree
+	}
+	else
+	{
+		throw out_of_range("index is entered incorrectly"); // error message
+	}
+}
+
+void MyQueue::push_back(int newnumber)
 {
 	if (!head) head = new MyNode(newnumber); // creates a list with newnumber
 	else
@@ -63,22 +89,44 @@ template <class T> void MyQueue<T>::push_back(int newnumber)
 	size++;
 }
 
-template <class T> MyQueue<T>::MyListIterator::MyListIterator(MyNode* start)
+void MyQueue::push_back(NodeT* tree)
+{
+	if (!head && tree)
+	{
+		head = new MyNode(0);
+		if (!head->tree && tree)
+		{
+			head->tree = tree; // creates a list with tree
+			size++;
+		}
+	}
+	else if (tree)
+	{
+		MyNode* current = head;
+		while (current->next)current = current->next; // moves the current list while the next item exists
+		current->next = new MyNode(0);
+		current->next->tree = tree;  // creates a list with tree
+		size++;
+	}
+	else throw out_of_range("lol");
+}
+
+MyQueue::MyListIterator::MyListIterator(MyNode* start)
 {
 	current = start;
 }
 
-template <class T> T* MyQueue<T>::create_iterator()
+MyIterator* MyQueue::create_iterator()
 {
 	return new MyListIterator(head);
 }
 
-template <class T> bool MyQueue<T>::MyListIterator::has_next()
+bool MyQueue::MyListIterator::has_next()
 {
 	return current;
 }
 
-template <class T> int MyQueue<T>::MyListIterator::next()
+int MyQueue::MyListIterator::next()
 {
 	if (current)
 	{

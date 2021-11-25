@@ -1,10 +1,11 @@
 #pragma once
 #include "MyIterator.h"
 #include "MyNode.h"
+#include "NodeT.h"
+#include "BinarySearchTree.h"
 #include <iostream>
 using namespace std;
 
-template <class T>
 class MyQueue
 {
 public:
@@ -13,11 +14,14 @@ public:
 	void clear();
 	void save_queue();
 	int get_elem(size_t index);
+	NodeT* get_elem_tree(size_t index);
 	void pop_front();
+	bool contains(int number);
 	size_t get_size();
 	void push_back(int newnumber);
-	T* create_iterator();
-	class MyListIterator : public T
+	void push_back(NodeT* tree);
+	MyIterator* create_iterator();
+	class MyListIterator : public MyIterator
 	{
 	public:
 		MyListIterator(MyNode* start);
@@ -28,5 +32,5 @@ public:
 	};
 private:
 	MyNode* head = nullptr;
-	int size = 0;
+	size_t size;
 };

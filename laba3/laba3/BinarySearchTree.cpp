@@ -1,6 +1,15 @@
 #include "BinarySearchTree.h"
 
-template <class T> bool MyBST<T>::contains(int number)
+
+MyBST::~MyBST()
+{
+	while (count)
+	{
+		remove(head->number);
+	}
+}
+
+bool MyBST::contains(int number)
 {
 	NodeT* tree = head;
 	while (tree)
@@ -14,12 +23,12 @@ template <class T> bool MyBST<T>::contains(int number)
 	return false;
 }
 
-template <class T>void MyBST<T>::insert(int newnumber)
+void MyBST::insert(int newnumber)
 {
 	if (!head)
 	{
 		head = new NodeT(newnumber);
-		count++;
+		count = 1;
 	}
 	else
 	{
@@ -51,17 +60,17 @@ template <class T>void MyBST<T>::insert(int newnumber)
 				}
 			}
 		}
-		else throw logic_error("lol");
+		else throw logic_error("the tree element already exists!");
 	}
 }
 
-template <class T> void MyBST<T>::remove(int number)
+void MyBST::remove(int number)
 {
 	if (contains(number))
 	{
 		NodeT* current = head;
 		int last = count;
-		while (number != current->number)
+		while (number != current->number) // moves to element with number
 		{
 			if (number < current->number)
 			{
@@ -72,68 +81,95 @@ template <class T> void MyBST<T>::remove(int number)
 				current = current->right;
 			}
 		}
-		NodeT* save = current;
-		while (last == count)
+		NodeT* remove = current;
+		if ((!remove->left) && (!remove->right)) // if there is no left or right element, then the element is a sheet
 		{
-			if ((!save->left) && (!save->right))
+			current->number = remove->number;
+			NodeT* removeel = remove;
+			if (remove->root)
 			{
-				current->number = save->number;
-				NodeT* removeel = save;
-				if (save->root)
+				if (remove->root->right)
 				{
-					if (save->root->right->number == current->number)
-						save->root->right = nullptr;
+					if (remove->root->right->number == current->number)
+						remove->root->right = nullptr;
 					else
-						save->root->left = nullptr;
+						remove->root->left = nullptr;
 				}
-				else save = nullptr;
-				delete removeel;
-				removeel = nullptr;
+			}
+			else remove = nullptr;
+			delete removeel;
+			removeel = nullptr;
+			count--;
+		}
+		else if (!remove->left && remove->right)
+		{
+			if (current->root)
+			{
+				current = current->root;
+				current->right = remove->right;
+				remove->right->root = current;
+				delete remove;
+				remove = nullptr;
 				count--;
 			}
-			else if (!save->left)
-				save = save->right;
-			else if (!save->right)
-				save = save->left;
 			else
 			{
-				if (save->number != current->number)
-				{
-					while (save->left)
-						save = save->left;
-					if (save->right)
-					{
-						NodeT* removeel = save;
-						current->number = save->number;
-						save->root->left = save->right;
-						delete removeel;
-						removeel = nullptr;
-						count--;
-					}
-					else
-					{
-						save->root->left = nullptr;
-						delete save;
-						save = nullptr;
-						count--;
-					}
-				}
-				else save = save->right;
+				head = remove->right;
+				head->root = nullptr;
+				delete remove;
+				remove = nullptr;
+				count--;
 			}
+		}
+		else if (!remove->right && remove->left)
+		{
+			if (current->root)
+			{
+				current = current->root;
+				current->left = remove->left;
+				remove->left->root = current;
+				delete remove;
+				remove = nullptr;
+				count--;
+			}
+			else
+			{
+				head = remove->left;
+				head->root = nullptr;
+				delete remove;
+				remove = nullptr;
+				count--;
+			}
+		}
+		else // if there is both right and left
+		{
+			remove = remove->right;
+			while (remove->left)
+				remove = remove->left;
+			current->number = remove->number;
+			current = remove->root;
+			if(current->right)if(current->right->number == remove->number)
+				current->right = remove->right;
+			if(current->left)if (current->left->number == remove->number)
+				current->left = remove->right;
+			if (remove->right)
+				remove->right->root = current;
+			delete remove;
+			remove = nullptr;
+			count--;
 		}
 	}
 }
 
-template <class T> T* MyBST<T>::create_dft_iterator()
+MyIterator* MyBST::create_dft_iterator()
 {
 	if (head)
 	{
-		MyQueue<MyIterator> list;
+		MyQueue list;
 		NodeT* current = head;
-		int maxcount = 0;
-		while(count > list.get_size())
+		while (count > list.get_size())
 		{
-			while (current->left)
+			while (current->left) // moves all the way to the left and adds elements
 			{
 				list.push_back(current->number);
 				current = current->left;
@@ -147,21 +183,48 @@ template <class T> T* MyBST<T>::create_dft_iterator()
 			else list.push_back(current->number);
 			while (current->root && count > list.get_size())
 			{
-				for (int i = 0; i < maxcount; i++) current = current->root;
-				if (current->root->right && current->root->left)
+				current = current->root; // goes to the root
+				if (current->right)
 				{
-					if (current->root->right)
-						current = current->root->right;
-					maxcount = 1;
-					break;
+					if (!list.contains(current->right->number))
+					{
+						current = current->right;
+						break;
+					}
 				}
-				else current = current->root;
+				if (current->left)
+				{
+					if (!list.contains(current->left->number))
+					{
+						current = current->left;
+						break;
+					}
+				}
 			}
-			if (current->right)
-				current = current->right;
 		}
-		list.save_queue();
+		list.save_queue(); // prevents all items from being deleted
 		return list.create_iterator();
 	}
-	throw out_of_range("lol");
+	throw out_of_range("the tree does not exist!");
+}
+
+MyIterator* MyBST::create_bft_iterator()
+{
+	if (head)
+	{
+		MyQueue list, list1;
+		list.push_back(head);
+		for (size_t i = 0; i < count; i++)
+		{
+			if (list.get_elem_tree(i)->left)
+				list.push_back(list.get_elem_tree(i)->left);
+			if (list.get_elem_tree(i)->right)
+				list.push_back(list.get_elem_tree(i)->right);
+		}
+		for (size_t i = 0; i < list.get_size(); i++)
+			list1.push_back(list.get_elem_tree(i)->number);
+		list1.save_queue();
+		return list1.create_iterator();
+	}
+	throw out_of_range("the tree does not exist!");
 }

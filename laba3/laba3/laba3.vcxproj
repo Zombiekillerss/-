@@ -143,12 +143,14 @@
     <ClCompile Include="laba3.cpp" />
     <ClCompile Include="MyQueue.cpp" />
     <ClCompile Include="MyNode.cpp" />
+    <ClCompile Include="NodeT.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BinarySearchTree.h" />
     <ClInclude Include="MyIterator.h" />
     <ClInclude Include="MyQueue.h" />
     <ClInclude Include="MyNode.h" />
+    <ClInclude Include="NodeT.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
