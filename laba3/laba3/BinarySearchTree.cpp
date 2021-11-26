@@ -1,6 +1,5 @@
 #include "BinarySearchTree.h"
 
-
 MyBST::~MyBST()
 {
 	while (count)

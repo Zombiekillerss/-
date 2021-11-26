@@ -32,5 +32,6 @@ public:
 	};
 private:
 	MyNode* head = nullptr;
+	MyNode* last = nullptr;
 	size_t size;
 };

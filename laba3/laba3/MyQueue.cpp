@@ -4,6 +4,7 @@ MyQueue::MyQueue()
 {
 	size = 0;
 	head = nullptr;
+	last = nullptr;
 }
 
 MyQueue::~MyQueue()
@@ -51,7 +52,11 @@ bool MyQueue::contains(int number)
 
 int MyQueue::get_elem(size_t index)//get element
 {
-	if (size >= index + 1)
+	if (size == index + 1)
+	{
+		return last->number;
+	}
+	else if (size > index + 1)
 	{
 		MyNode* current = head;
 		for (size_t i = 0; i < index; i++, current = current->next); // moves the current list to index inclusive
@@ -65,7 +70,11 @@ int MyQueue::get_elem(size_t index)//get element
 
 NodeT* MyQueue::get_elem_tree(size_t index)
 {
-	if (size >= index + 1)
+	if (size == index + 1)
+	{
+		return last->tree;
+	}
+	else if (size > index + 1)
 	{
 		MyNode* current = head;
 		for (size_t i = 0; i < index; i++, current = current->next); // moves the current list to index inclusive
@@ -79,12 +88,15 @@ NodeT* MyQueue::get_elem_tree(size_t index)
 
 void MyQueue::push_back(int newnumber)
 {
-	if (!head) head = new MyNode(newnumber); // creates a list with newnumber
+	if (!head)
+	{
+		head = new MyNode(newnumber); // creates a list with newnumber
+		last = head;
+	}
 	else
 	{
-		MyNode* current = head;
-		while (current->next) current = current->next; // moves the current list while the next item exists
-		current->next = new MyNode(newnumber); // adds newnumber to the end of the list
+		last->next = new MyNode(newnumber); // adds newnumber to the end of the list
+		last = last->next;
 	}
 	size++;
 }
@@ -94,21 +106,18 @@ void MyQueue::push_back(NodeT* tree)
 	if (!head && tree)
 	{
 		head = new MyNode(0);
-		if (!head->tree && tree)
-		{
-			head->tree = tree; // creates a list with tree
-			size++;
-		}
+		last = head;
+		head->tree = tree; // creates a list with tree
+		size++;
 	}
 	else if (tree)
 	{
-		MyNode* current = head;
-		while (current->next)current = current->next; // moves the current list while the next item exists
-		current->next = new MyNode(0);
-		current->next->tree = tree;  // creates a list with tree
+		last->next = new MyNode(0);
+		last = last->next;
+		last->tree = tree;  // creates a list with tree
 		size++;
 	}
-	else throw out_of_range("lol");
+	else throw out_of_range("the tree does not exist!");
 }
 
 MyQueue::MyListIterator::MyListIterator(MyNode* start)
