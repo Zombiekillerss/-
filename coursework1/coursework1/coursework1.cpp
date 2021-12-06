@@ -5,15 +5,13 @@ using namespace std;
 
 int main()
 {
-    string str;
-    //str += "(2+2)*tg(pi/4)-tg(pi/4)*(2+2)";
-    str = "(90)+89+78+9";
-    MyCalculator calc(str);
-    str = "log(90)+89+78+9";
-    calc.setarithexp(str);
-    calc.isarith();
-    //col.arithtopolish();
-    //col.resultarith();
-    /*cout << str << endl;
-    cout << col << endl;*/
+	bool flag = true;
+	size_t i;
+	string str;
+	MyCalculator calc;
+	str = "sin(pi/2)-sin(pi/2)";
+	calc.setarithexp(str);
+	calc.resultarith();
+	cout << "you intered " << str << endl;
+	cout << calc << endl;
 }

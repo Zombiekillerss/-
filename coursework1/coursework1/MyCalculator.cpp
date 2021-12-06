@@ -15,10 +15,10 @@ MyCalculator::MyCalculator(string arith)
 
 bool MyCalculator::isarith()
 {
-	int nesting = 0;
+	int nesting = 0;//nesting brackets
 	size_t i = 0;
-	bool flag = !arith.empty();
-	for (i = 0; i < arith.size() && flag; i++)
+	bool flag = !arith.empty(); // string validation
+	for (i = 0; i < arith.size() && flag; i++) // walks through the line and looks if numbers, functions and signs are entered correctly
 	{
 		flag = (myfind("cos",i, 3) == i || myfind("sin", i, 3) == i
 			|| myfind("ctg", i, 3) == i || myfind("log", i, 3) == i);
@@ -59,7 +59,7 @@ bool MyCalculator::isarith()
 		}
 	}
 	flag = flag && mycount('(') == mycount(')');
-	if (flag)
+	if (flag)// if there are no extra characters
 	{
 		for (i = 0; i < arith.size() && flag; i++)
 		{
@@ -76,22 +76,22 @@ bool MyCalculator::isarith()
 				else flag = false;
 				break;
 			}
-			flag = !(nesting < 0);
+			flag = flag && !(nesting < 0);
 			if ((arith[i] == 'c' || arith[i] == 's' || arith[i] == 'l') && flag)
 			{
-				if (arith[i + 1] == 'n')
+				if (arith[i + 1] == 'n') // if ln
 				{
 					if (i + 2 < arith.size()) flag = (arith[i + 2] == '(' || arith[i + 3] == '(');
 					else flag = false;
 					i += 1;
 				}
-				else if (arith[i + 2] == 'n' || arith[i + 2] == 's' || arith[i + 2] == 'g')
+				else if (arith[i + 2] == 'n' || arith[i + 2] == 's' || arith[i + 2] == 'g') // if sin cos log
 				{
 					if (i + 3 < arith.size()) flag = (arith[i + 3] == '(');
 					else flag = false;
 					i += 2;
 				}
-				else
+				else // if sqrt
 				{
 					if (i + 4 < arith.size()) flag = (arith[i + 4] == '(');
 					else flag = false;
@@ -208,7 +208,7 @@ void MyCalculator::arithtopolish()
 			if (isdigit(arith[i]) || arith[i] == 'c' || arith[i] == 'p' || arith[i] == 'e'
 				|| arith[i] == 's' || arith[i] == 't' || arith[i] == 'l' || arith[i] == 'a')
 			{
-				for (; checksign(i, arith) == -1 && i < arith.size(); i++)
+				for (; checksign(i, arith) == -1 && i < arith.size(); i++) // if a function then writes a function
 				{
 					changestr += arith[i];
 					strfomypolish += arith[i];
@@ -216,7 +216,7 @@ void MyCalculator::arithtopolish()
 				changestr += ' ';
 				strfomypolish += ' ';
 			}
-			if (checksign(i, arith) == 1)
+			if (checksign(i, arith) == 1) // if i - '-'
 			{
 				if (i > 0)
 				{
@@ -252,7 +252,7 @@ void MyCalculator::arithtopolish()
 			}
 			switch (checksign(i, arith))
 			{
-			case 0:
+			case 0://if +
 				while (list.get_size())
 				{
 					if (list.get_elem(0) != "(")
@@ -267,7 +267,7 @@ void MyCalculator::arithtopolish()
 				}
 				list.push_front("+");
 				break;
-			case 1:
+			case 1://if -
 				while (list.get_size())
 				{
 					if (list.get_elem(0) != "(")
@@ -282,7 +282,7 @@ void MyCalculator::arithtopolish()
 				}
 				list.push_front("-");
 				break;
-			case 2:
+			case 2://if *
 				while (list.get_size())
 				{
 					if (list.get_elem(0) != "("
@@ -298,7 +298,7 @@ void MyCalculator::arithtopolish()
 				}
 				list.push_front("*");
 				break;
-			case 3:
+			case 3://if ^
 				while (list.get_size())
 				{
 					if (list.get_elem(0) != "("
@@ -314,7 +314,7 @@ void MyCalculator::arithtopolish()
 				}
 				list.push_front("^");
 				break;
-			case 4:
+			case 4://if /
 				while (list.get_size())
 				{
 					if (list.get_elem(0) != "("
@@ -330,10 +330,10 @@ void MyCalculator::arithtopolish()
 				}
 				list.push_front("/");
 				break;
-			case 5:
+			case 5:// if (
 				list.push_front("(");
 				break;
-			case 6:
+			case 6://if )
 				while (list.get_elem(0) != "(")
 				{
 					changestr += list.get_elem(0);
@@ -347,7 +347,7 @@ void MyCalculator::arithtopolish()
 				break;
 			}
 		}
-		while (list.get_size())
+		while (list.get_size())//inserts remaining operations
 		{
 			changestr += list.get_elem(0);
 			strfomypolish += list.get_elem(0);
@@ -355,21 +355,19 @@ void MyCalculator::arithtopolish()
 			strfomypolish += ' ';
 			list.pop_front();
 		}
-		polish = changestr;
-		mypolish = strfomypolish;
+		polish = changestr;// reverse polish notation
+		mypolish = strfomypolish;// Polish notation with unary minus highlighting if any
 	}
+	else throw logic_error("expression entered incorrectly!");
 }
 
 double MyCalculator::resultarith()
 {
-	if (!isarithmetic)
-		isarithmetic = isarith();
-	if (isarithmetic && polish.empty())
-		arithtopolish();
+	isarithmetic = isarith();
+	if(isarithmetic) arithtopolish();
 	if (isarithmetic)
 	{
 		string number, save, chanarith = arith;
-		Listnum list;
 		Liststring liststring;
 		size_t i, j;
 		for (i = 0, j = 0; i < mypolish.size() && j < chanarith.size(); i++)
@@ -380,7 +378,7 @@ double MyCalculator::resultarith()
 				j++;
 			if (mypolish[i] != ' ' && checksign(i, mypolish) == -1)
 			{
-				for (; i < mypolish.size() && mypolish[i] != ' '; i++)
+				for (; i < mypolish.size() && mypolish[i] != ' '; i++)// writes a function or number to a list
 				{
 					number += mypolish[i];
 					if(mypolish[i] == arith[j] && j + 1 != arith.size())j++;
@@ -391,35 +389,104 @@ double MyCalculator::resultarith()
 						number = "";
 					}
 				}
+				if (arith[j] == ')' && liststring.get_size() > 1)
+				{
+					switch (liststring.get_elem(1)[0])
+					{
+					case 't': //if tg
+						result = tan(mystringtodouble(liststring.get_elem(0)));
+						liststring.pop_front();
+						liststring.pop_front();
+						liststring.push_front(mydoubletostring(result));
+						break;
+					case 'c'://if cos or ctg
+						if (liststring.get_elem(1)[1] == 'o')
+						{
+							result = cos(mystringtodouble(liststring.get_elem(0)));
+							liststring.pop_front();
+							liststring.pop_front();
+							liststring.push_front(mydoubletostring(result));
+						}
+						else
+						{
+							result = cos(mystringtodouble(liststring.get_elem(0))) / sin(mystringtodouble(liststring.get_elem(0)));
+							liststring.pop_front();
+							liststring.pop_front();
+							liststring.push_front(mydoubletostring(result));
+						}
+						break;
+					case 's'://if sin or sqrt
+						if (liststring.get_elem(1)[1] == 'i')
+						{
+							result = sin(mystringtodouble(liststring.get_elem(0)));
+							liststring.pop_front();
+							liststring.pop_front();
+							liststring.push_front(mydoubletostring(result));
+						}
+						else
+						{
+							result = sqrt(mystringtodouble(liststring.get_elem(0)));
+							liststring.pop_front();
+							liststring.pop_front();
+							liststring.push_front(mydoubletostring(result));
+						}
+						break;
+					case 'l': // if ln or log
+						if (liststring.get_elem(1)[1] == 'n')
+						{
+							result = log(mystringtodouble(liststring.get_elem(0)));
+							liststring.pop_front();
+							liststring.pop_front();
+							liststring.push_front(mydoubletostring(result));
+						}
+						else
+						{
+							result = log10(mystringtodouble(liststring.get_elem(0)));
+							liststring.pop_front();
+							liststring.pop_front();
+							liststring.push_front(mydoubletostring(result));
+						}
+						break;
+					case 'a':// if arccos
+						result = acos(mystringtodouble(liststring.get_elem(0)));
+						liststring.pop_front();
+						liststring.pop_front();
+						liststring.push_front(mydoubletostring(result));
+						break;
+					default:
+						j--;
+					}
+					if (j + 1 != arith.size()) j++;
+				}
 				continue;
 			}
 			switch(checksign(i, mypolish))
 			{
-			case 0:
+			case 0:// if +
 				result = mystringtodouble(liststring.get_elem(1)) + mystringtodouble(liststring.get_elem(0));
 				liststring.pop_front();
 				liststring.pop_front();
 				liststring.push_front(mydoubletostring(result));
 				break;
-			case 1:
+			case 1:// if -
 				result = mystringtodouble(liststring.get_elem(1)) - mystringtodouble(liststring.get_elem(0));
 				liststring.pop_front();
 				liststring.pop_front();
 				liststring.push_front(mydoubletostring(result));
 				break;
-			case 2:
+			case 2:// if *
 				result = mystringtodouble(liststring.get_elem(1)) * mystringtodouble(liststring.get_elem(0));
 				liststring.pop_front();
 				liststring.pop_front();
 				liststring.push_front(mydoubletostring(result));
 				break;
-			case 3:
+			case 3:// if ^
 				result = pow(mystringtodouble(liststring.get_elem(1)), mystringtodouble(liststring.get_elem(0)));
 				liststring.pop_front();
 				liststring.pop_front();
 				liststring.push_front(mydoubletostring(result));
 				break;
-			case 4:
+			case 4:// if /
 				result = mystringtodouble(liststring.get_elem(1)) / mystringtodouble(liststring.get_elem(0));
 				liststring.pop_front();
 				liststring.pop_front();
@@ -467,6 +534,7 @@ double MyCalculator::resultarith()
 						liststring.pop_front();
 						liststring.push_front(mydoubletostring(result));
 					}
+					break;
 				case 'l':
 					if (liststring.get_elem(1)[1] == 'n')
 					{
@@ -482,14 +550,17 @@ double MyCalculator::resultarith()
 						liststring.pop_front();
 						liststring.push_front(mydoubletostring(result));
 					}
+					break;
 				case 'a':
 					result = acos(mystringtodouble(liststring.get_elem(0)));
 					liststring.pop_front();
 					liststring.pop_front();
 					liststring.push_front(mydoubletostring(result));
+					break;
 				}
 				if (j + 1 != arith.size()) j++;
 			}
+			
 		}
 		result = mystringtodouble(liststring.get_elem(0));
 	}
@@ -498,20 +569,20 @@ double MyCalculator::resultarith()
 
 string MyCalculator::getpolish()
 {
-	return polish;
+	return polish;//outputs reverse polish notation
 }
 
 double MyCalculator::getresult()
 {
-	return result;
+	return result;// outputs the result
 }
 
 void MyCalculator::setarithexp(string expression)
 {
-	arith = expression;
+	arith = expression; // overwrites arithmetic expression
 }
 
-int MyCalculator::mycount(const char ch)
+int MyCalculator::mycount(const char ch)//counts the number of characters
 {
 	int count = 0;
 	for (size_t i = 0; i < arith.size(); i++)
@@ -552,7 +623,7 @@ int MyCalculator::checksign(size_t index, string str)
 	}
 }
 
-int MyCalculator::myfind(const char* ch, size_t index, int len)
+int MyCalculator::myfind(const char* ch, size_t index, int len)//finds a string within a stringand returns either - 1 = not found or the first occurrence
 {
 	int current = 0;
 	size_t i;
@@ -574,7 +645,7 @@ int MyCalculator::myfind(const char* ch, size_t index, int len)
 	else return -1;
 }
 
-int MyCalculator::myfind(const string ch, size_t index, int len)
+int MyCalculator::myfind(const string ch, size_t index, int len)//finds a string within a stringand returns either - 1 = not found or the first occurrence
 {
 	int current = 0;
 	size_t i;
@@ -596,7 +667,7 @@ int MyCalculator::myfind(const string ch, size_t index, int len)
 	else return -1;
 }
 
-double MyCalculator::mystringtodouble(string number)
+double MyCalculator::mystringtodouble(string number)//converts a string to a number
 {
 	double numdouble = 0;
 	int degree = 1, minus = 0;
@@ -628,7 +699,7 @@ double MyCalculator::mystringtodouble(string number)
 	return numdouble;
 }
 
-string MyCalculator::mydoubletostring(double number)
+string MyCalculator::mydoubletostring(double number)//converts a number to a string
 {
 	int num;
 	double changenum = number;
@@ -660,7 +731,7 @@ string MyCalculator::mydoubletostring(double number)
 	return str;
 }
 
-ostream& operator<<(ostream& out, const MyCalculator& calc)
+ostream& operator<<(ostream& out, const MyCalculator& calc)//outputs reverse polish notation and the result
 {
 	if (calc.isarithmetic)
 	{
