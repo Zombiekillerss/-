@@ -4,14 +4,6 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-/*
-bool isarith();
-	void arithtopolish();
-	double resultarith();
-	string getpolish();
-	double getresult();
-	void setarithexp(string expression);
-*/
 namespace UnitTestForCoursework1
 {
 	TEST_CLASS(UnitTestForCoursework1)
