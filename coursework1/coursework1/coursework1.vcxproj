@@ -27,7 +27,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -140,10 +140,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="coursework1.cpp" />
+    <ClCompile Include="Listnum.cpp" />
     <ClCompile Include="Liststring.cpp" />
     <ClCompile Include="MyCalculator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Listnum.h" />
     <ClInclude Include="Liststring.h" />
     <ClInclude Include="MyCalculator.h" />
   </ItemGroup>

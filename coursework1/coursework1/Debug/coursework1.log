@@ -1,2 +1,8 @@
 ﻿  coursework1.cpp
-  coursework1.vcxproj -> C:\Users\Хозяин PC\Documents\GitHub\-\coursework1\Debug\coursework1.exe
+  Listnum.cpp
+  Liststring.cpp
+  MyCalculator.cpp
+C:\Users\Хозяин PC\Documents\GitHub\-\coursework1\coursework1\MyCalculator.cpp(641,8): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+C:\Users\Хозяин PC\Documents\GitHub\-\coursework1\coursework1\MyCalculator.cpp(654,20): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+  Создание кода...
+  coursework1.vcxproj -> C:\Users\Хозяин PC\Documents\GitHub\-\coursework1\Debug\coursework1.lib
